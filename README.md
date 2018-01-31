@@ -1,13 +1,30 @@
-# uPort Demonstration
-### Login With Ethereum Mini Application
+# ResumeChain
 
-The boilerplate is opinionated. In fact, it's not really a boilerplate. I've made a lot of application architecture decisions. It's more of application launchkit, which also happens to have Ethers, uPort and Infura integrated into the React/Redux/Saga workflow.
+The purpose of ResumeChain is to create a working prototype of how Sovereign Identity tech can be leveraged to alleviate some of the burden of applying for a job as well as simplify verification of employment history.
 
-![Demo Gif](documentation/assets/frontDemo.gif)
+**How uPort works**
 
-**NOTICE:** The repo is a basic prototype. That being said this repo will probably get a decent amount of love and attention, because I'm amped up for Blockchain Logins.
+In the most general sense, UPort at it's core works on three contracts;
+1. Controller contract
+2. Proxy contract
+3. Application contract
 
-**IMPORTANT CODE LOCATIONS**
+ControllerContract(deviceid)>ProxyContract(userprivatekey)>ApplicatonContract(access)
+
+
+ In very simple terms, Uport works by providing a digital middleman between a users private key via a proxy contract.
+
+As illustrated above, the uPort mobile device app interacts with the Controller Contract, which sends the mobile address identifier to the proxy contract. The proxy contract matches the device id to a stored user private key, and sends the private key to the application contract. The application contract verifies the private key then sends a hash to some sort of storage "Infura IPFS"
+
+
+**ResumeChain Concept**
+
+1. A business registers with uPort and attaches the QR code for there company to an employees hiring form.
+2. The employee who is already registered with uPort scans the QR code, which automatically time stamps the beginning date of employement on the blockchain for that company.
+
+**NOTICE:** This repo is a basic prototype for a blockchain resume based system. for implementation it would require a couple of large hurdles to be overcome such as incentivizing employers to register with uPort. This could be accomplished by showing the lessening burden on HR for reference request etc..
+
+**CODE Directory**
 
 ```
 // Blockchain Integrations
@@ -24,25 +41,8 @@ The boilerplate is opinionated. In fact, it's not really a boilerplate. I've mad
 ```
 
 
-### Who
-Blockchain Developers
 
-### What
-Prototyping Applications with uPort (Etheruem) Login
 
-### Why
-The future deserves *dope* dApps.
-
-```
--------- Step 1 --------
-git clone git@github.com:KamesCG/uport-boilerplate.git ; cd uport-boilerplate
--------- Step 2 --------
-yarn
--------- Step 3 --------
-yarn start
-yarn build
--------- Step 1000 --------
-yarn install --dev joyous-dancing
 ```
 
 # Infrastructure
@@ -82,29 +82,13 @@ yarn extension
 yarn embed
 ```
 
-The project was driven by personal desire - I want to design,create and experiment, without technical limitations constantly arising. However, on the flip-side, I also want full control over inherntly complex systems/mechanisms. Sacraficing in either department is unacceptable. Essentially, the designer/developer/entrepreneur in me wants an idea platform.
-
 ```
 src
 - application (src/application)
 - extension (src/extension)
 - embed (src/embed)
 - core (src/core)
-```
 
-
-**Why?**
-
-A unified build workflow to quickly deploy infrastructure in minutes, not days.
-
-The The dApp Boilerplate  project takes a modular components/containers approach. By seperating core logic into a self-contained file systems, features can more easily be added/edited/removed for each unique project. Essentially, modularity equals core ui/ux across the ```app, extension and embed``` build process. In the future, Blockchain Smart Contracts can automatically added/removed to build process as we begin to standarize.
-
-# How It Works
-The Browser Application, Chrome Extension and Page Plugin (embed) codebase all "reach" back into the core folder for shared components, containers and fetching logic.
-
-It's a little confusing at the moment, because it's **not obvious** where a developer should look.
-
-```
 /*--- Interface ---*/
 assembly: path.resolve(__dirname, '../src/core/assembly'),
 assets: path.resolve(__dirname, '../src/core/assets'),
@@ -121,3 +105,55 @@ wrappers: path.resolve(__dirname, '../src/core/wrappers'),
 The aliases provide a simply way for component developers to request shared component/containers within the application, extension and embed build process.
 # ResumeChain
 # ResumeChain
+
+**CODE Directory**
+
+```
+// Blockchain Integrations
+
+/src/core/assimilation/ <----- Blockchain Integrations
+/src/core/assimilation/fetching/uport <----- uPort Components
+/src/core/assimilation/display/uport <----- uPort Containers
+/src/core/assimilation/symbiosis/uport <----- uPort Blockchain Requests
+
+// Application Demo Page Components
+
+/src/application/interface/smithing/pages/Front
+/src/application/interface/smithing/regions/RegionBranding
+```
+
+
+
+
+```
+
+# Infrastructure
+
+The Project has several important high-level folders.
+
+- assembly <----- WebAssebmly/C++
+- build <----- Deployable Assets
+- configuration <----- Build Management
+- contracts <----- Ethereum Smart Contracts
+- documentation
+- functions <----- Serverless Cloud Functions (Firebase)
+- public <----- Static Entry
+- scripts <----- Build Logic
+- src <---- Primary Javascript
+
+The ```src``` folder contains the root entry files for the application, extensions and page plugins.
+The ```build``` folder contains the bundled/optimized entry files for the application, extension and embedable dapps.
+The ```contracts``` folder contains application specific smart contracts.
+The ```assembly``` folder contains application specific C++/Go/Rust for WebAssembly target ouput.
+The ```embed``` folder contains modular components/mini-applications with 1 line Javascript embeds
+
+
+## 1 Project - 3 Build Systems
+#### Browser Application, Extension and Page Plugin
+3 seperate build files can be generated from the project scaffolding.
+
+1. Progressive Web Application
+2. Chrome Browser Extension | Working
+3. Embeddable Javascript | Barebones == Not Ready
+
+The dApp Boilerplate will build 3 seperate Javascript "applications" from a few simple CLI commands.
